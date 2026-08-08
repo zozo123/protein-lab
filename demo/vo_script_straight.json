@@ -1,0 +1,19 @@
+{
+  "voice_id": "Xb7hH8MSUJpSbSDYk0k2",
+  "voice_name": "Alice - Clear Educator",
+  "model_id": "eleven_multilingual_v2",
+  "segments": [
+    {
+      "id": "01",
+      "text": "Gut releases GLP-1 after a meal. Thirty amino acids. Gone in about two minutes."
+    },
+    {
+      "id": "02",
+      "text": "Omnigent agent on Databricks. Tool call: Boltz. Sequence in. Structure out. Confidence zero point eight three. P.L.D.D.T. zero point nine."
+    },
+    {
+      "id": "03",
+      "text": "omni run agents protein-lab. That's the demo."
+    }
+  ]
+}

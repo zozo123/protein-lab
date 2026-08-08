@@ -1,0 +1,24 @@
+{
+  "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+  "voice_name": "George - Warm Captivating Storyteller",
+  "model_id": "eleven_multilingual_v2",
+  "target_seconds": 30,
+  "segments": [
+    {
+      "id": "01",
+      "text": "A gut peptide. Thirty amino acids. About two minutes in the blood before an enzyme erases it."
+    },
+    {
+      "id": "02",
+      "text": "GLP-1. That brief signal is the molecular root of a major class of medicines for diabetes and weight."
+    },
+    {
+      "id": "03",
+      "text": "Here, Protein Lab—an Omnigent agent on Databricks—sends the sequence to Boltz and returns a fold. Confidence, zero point eight three. P.L.D.D.T., zero point nine."
+    },
+    {
+      "id": "04",
+      "text": "One session. Sequence to structure. Shared if you want it seen."
+    }
+  ]
+}

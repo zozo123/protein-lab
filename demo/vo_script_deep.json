@@ -1,0 +1,23 @@
+{
+  "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+  "voice_name": "George",
+  "model_id": "eleven_multilingual_v2",
+  "segments": [
+    {
+      "id": "01_gut",
+      "text": "After a meal, intestinal L-cells release GLP-1. Thirty amino acids. An enzyme, DPP-4, clears it in about two minutes. That brief incretin signal became the molecular basis of a major metabolic drug class."
+    },
+    {
+      "id": "02_ui",
+      "text": "This is the Omnigent interface on Databricks. Shared sessions. Tool cards. Agents panel. Policies. One meta-harness over coding agents and custom YAML agents alike."
+    },
+    {
+      "id": "03_stack",
+      "text": "Protein Lab is a short agent file. Harness, tools, guardrails. The agent calls Boltz in the cloud: sequence in, coordinates out. Our live run: structure confidence zero point eight three, P.L.D.D.T. zero point nine, thirty residues."
+    },
+    {
+      "id": "04_fold",
+      "text": "The fold, rendered from the predicted C.I.F. Omnigent session to structure movie. omni run, agents, protein-lab."
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "voice_id": "Xb7hH8MSUJpSbSDYk0k2",
+  "voice_name": "Alice - Clear",
+  "model_id": "eleven_multilingual_v2",
+  "segments": [
+    {
+      "id": "01_glp1",
+      "text": "GLP-1. Thirty amino acids from the gut. Cleared in about two minutes. That short incretin signal is the molecular root of major metabolic drugs."
+    },
+    {
+      "id": "02_omnigent",
+      "text": "Omnigent on Databricks is a meta-harness: one live session over coding agents and custom YAML agents. Share. Tool cards. Policies."
+    },
+    {
+      "id": "03_boltz",
+      "text": "Protein Lab calls Boltz. Sequence in. Structure out. Confidence zero point eight three. P.L.D.D.T. zero point nine. Thirty residues."
+    },
+    {
+      "id": "04_fold",
+      "text": "The fold—from the predicted C.I.F. Sequence to structure in one Omnigent session. omni run, agents, protein-lab."
+    }
+  ]
+}

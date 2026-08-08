@@ -1,0 +1,23 @@
+{
+  "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+  "voice_name": "George - NYT storyteller",
+  "model_id": "eleven_multilingual_v2",
+  "segments": [
+    {
+      "id": "01",
+      "text": "GLP-1. Thirty amino acids from the gut. Cleared in about two minutes—the molecular root of major metabolic medicines."
+    },
+    {
+      "id": "02",
+      "text": "Omnigent, on Databricks: a meta-harness for agents. One live session. Share. Tools. Policies."
+    },
+    {
+      "id": "03",
+      "text": "Protein Lab calls Boltz. Sequence in. Structure out. Confidence, zero point eight three. P.L.D.D.T., zero point nine."
+    },
+    {
+      "id": "04",
+      "text": "The fold. From the predicted coordinates. Sequence to structure—in one session. omni run, agents, protein-lab."
+    }
+  ]
+}
