@@ -1,212 +1,39 @@
-# Omnigent Protein Lab
-# --------------------
-# A custom agent that turns sequences into structures and spin movies.
-# Uses Boltz when installed; otherwise falls back to RCSB experimental
-# structures so the demo always works offline-friendly.
-#
-# Run:
-#   omni run ./agents/protein-lab
-#
-# Or from this repo after `omnigent setup`:
-#   omni run agents/protein-lab -p "Fold ubiquitin and make a spin movie"
-#
-# Docs: https://docs.databricks.com/aws/en/omnigent/
-#       https://omnigent.ai/docs/use/custom-agents
-
 spec_version: 1
 name: protein-lab
 description: >-
-  Structural biology lab agent. Predicts protein structures (Boltz or demo
-  RCSB fallback), renders 3D backbone stills, and produces rotating structure
-  movies for demos and shared Omnigent sessions.
+  Structural-biology agent that takes a protein sequence through structure
+  prediction, confidence reporting, rendering, and a rotating movie. Uses
+  Boltz for live predictions and keeps an RCSB-backed demo fallback.
+
+instructions: AGENTS.md
 
 executor:
   type: omnigent
   config:
-    # Swap one line to change harnesses — tools/prompt stay the same.
-    # Options: claude-sdk, codex, pi, grok, openai-agents, ...
     harness: claude-sdk
-  # Leave model unset to use your configured provider default, or pin:
-  # model: claude-sonnet-4-6
 
-prompt: |
-  You are **Protein Lab**, an Omnigent structural-biology agent.
-
-  Your job is to help scientists and demo audiences go from a protein name
-  or sequence to an inspectable 3D structure and a shareable spin movie.
-
-  ## Workflow (always follow this order)
-
-  1. **Orient** — If the user names a protein vaguely, call `list_demo_targets`
-     and offer the curated set (ubiquitin, crambin, insulin, hemoglobin, gfp).
-  2. **Resolve sequence** — For UniProt accessions use `fetch_uniprot_sequence`.
-     For demo ids just pass `target=` to `predict_structure`.
-  3. **Predict / fetch structure**
-     - For **live Boltz cloud** jobs (protein + ligand, binding metrics),
-       write or reuse an entities JSON (see `prediction-input.json`) and call
-       `run_boltz_api_prediction`. Requires `BOLTZ_API_KEY`.
-     - For classic folds / offline demos, call `predict_structure` with
-       `engine="auto"` (local Boltz if installed, else RCSB).
-  4. **Summarize** — Quote confidence metrics (structure_confidence, ptm,
-     iptm, complex_plddt when present) and geometry (n atoms, chains, Rg).
-     Always say which engine produced the structure.
-  5. **Visualize** — Call `render_structure` for a hero still, then
-     `make_structure_movie` for a rotating MP4/GIF. Always return absolute
-     paths so the human can open them.
-  6. **Narrate** — Close with a 2–3 sentence scientific blurb and the output
-     paths.
-
-  ## Style
-
-  - Be concise and demo-friendly. Prefer short paragraphs and bullet lists.
-  - Always report the **engine** used (boltz vs demo-rcsb) so the audience
-    knows when they are looking at an experimental structure vs a prediction.
-  - Never invent coordinates. Only visualize files returned by your tools.
-  - If Boltz is missing, say so cheerfully and continue with the demo fallback —
-    do not block the session.
-
-  ## Example first turns
-
-  - "Fold ubiquitin and make a movie"
-  - "Show me GFP"
-  - "Predict structure for sequence MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG"
-
-instructions: AGENTS.md
+interaction:
+  conversational: true
+  modalities:
+    input: [text, file]
+    output: [text]
 
 os_env:
   type: caller_process
   cwd: .
   sandbox:
-    # Allow writing demo outputs; network for RCSB / UniProt / Boltz weights.
-    write_paths: [., outputs, .cache, data]
+    type: auto
+    write_paths:
+      - .
+      - ../../outputs
+      - ../../.cache
+      - ../../data
     allow_network: true
 
-tools:
-  list_demo_targets:
-    type: function
-    description: >-
-      List curated demo proteins (ubiquitin, crambin, insulin, hemoglobin, gfp)
-      with PDB ids, UniProt accessions, and sequence lengths.
-    callable: tools.protein_tools.list_demo_targets
+# Custom Python tools are packaged under tools/python and auto-discovered by
+# Omnigent. The wrappers delegate to the reusable implementation in the repo's
+# top-level tools/protein_tools.py.
 
-  fetch_uniprot_sequence:
-    type: function
-    description: Fetch a protein amino-acid sequence from UniProt by accession.
-    callable: tools.protein_tools.fetch_uniprot_sequence
-    parameters:
-      type: object
-      properties:
-        accession:
-          type: string
-          description: UniProt accession, e.g. P0CG48
-      required: [accession]
-
-  predict_structure:
-    type: function
-    description: >-
-      Predict or fetch a 3D structure. engine=auto tries Boltz then falls back
-      to RCSB experimental structures for a reliable demo.
-    callable: tools.protein_tools.predict_structure
-    parameters:
-      type: object
-      properties:
-        target:
-          type: string
-          description: Demo target id (ubiquitin, crambin, insulin, hemoglobin, gfp)
-        sequence:
-          type: string
-          description: Raw amino-acid sequence (if not using a demo target)
-        pdb_id:
-          type: string
-          description: Optional RCSB PDB id to load directly
-        engine:
-          type: string
-          enum: [auto, boltz, demo]
-          description: Prediction backend (default auto)
-      required: []
-
-  summarize_structure:
-    type: function
-    description: Compute geometric stats (n Cα, chains, radius of gyration) for a PDB.
-    callable: tools.protein_tools.summarize_structure
-    parameters:
-      type: object
-      properties:
-        structure_path:
-          type: string
-      required: [structure_path]
-
-  render_structure:
-    type: function
-    description: Render a single high-quality backbone still (PNG).
-    callable: tools.protein_tools.render_structure
-    parameters:
-      type: object
-      properties:
-        structure_path:
-          type: string
-        title:
-          type: string
-        color:
-          type: string
-          description: Hex color for the primary chain, e.g. "#7C5CFF"
-        out_name:
-          type: string
-        angle:
-          type: number
-      required: [structure_path]
-
-  make_structure_movie:
-    type: function
-    description: >-
-      Render a rotating 3D backbone movie (MP4 via ffmpeg, GIF fallback).
-      Perfect for Omnigent demos and shared sessions.
-    callable: tools.protein_tools.make_structure_movie
-    parameters:
-      type: object
-      properties:
-        structure_path:
-          type: string
-        title:
-          type: string
-        color:
-          type: string
-        out_name:
-          type: string
-        n_frames:
-          type: integer
-        fps:
-          type: integer
-        elevation:
-          type: number
-      required: [structure_path]
-
-  run_boltz_api_prediction:
-    type: function
-    description: >-
-      Run a live Boltz cloud structure+binding prediction via boltz-api.
-      Requires BOLTZ_API_KEY. Input is a JSON file path (see prediction-input.json).
-      Returns structure CIF path and confidence metrics (ptm, iptm, pLDDT).
-    callable: tools.protein_tools.run_boltz_api_prediction
-    parameters:
-      type: object
-      properties:
-        input_json_path:
-          type: string
-          description: Path to entities JSON (protein + ligand_smiles)
-        name:
-          type: string
-          description: Local run directory name
-        root_dir:
-          type: string
-          description: Parent directory for run outputs
-      required: [input_json_path]
-
-# Contextual policies — keep the demo safe
-# (see https://omnigent.ai/docs/policies/overview)
-policies:
-  max_tool_calls:
-    type: function
-    handler: omnigent.policies.builtins.safety.max_tool_calls_per_session
-    factory_params:
-      limit: 40
+params:
+  default_target: glp1
+  default_engine: auto
