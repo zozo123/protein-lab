@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Omnigent · Protein Lab — Databricks UI mock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0c0c12;
+      --panel: #1c1a28;
+      --panel2: #242234;
+      --chat: #161422;
+      --border: #3c3854;
+      --text: #f0f0f5;
+      --muted: #9694aa;
+      --accent: #ec4899;
+      --purple: #7c5cff;
+      --teal: #00d4aa;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --card: #28263a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #08080c;
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .stage {
+      width: min(1280px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,.55);
+    }
+    .chrome {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: #181624;
+    }
+    .dots { display: flex; gap: 8px; }
+    .dots span {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .dots .r { background: #ff5f57; }
+    .dots .y { background: #ffbd2e; }
+    .dots .g { background: #28c840; }
+    .title {
+      flex: 1;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .share {
+      background: var(--accent);
+      color: white;
+      border: 0;
+      border-radius: 14px;
+      padding: 8px 16px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .body {
+      display: grid;
+      grid-template-columns: 1.4fr 0.85fr;
+      min-height: 640px;
+    }
+    .chat {
+      background: var(--chat);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      border-right: 1px solid var(--border);
+    }
+    .user {
+      align-self: flex-end;
+      background: #463c6e;
+      padding: 12px 16px;
+      border-radius: 18px;
+      max-width: 80%;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+    .agent {
+      color: var(--text);
+      font-size: 14.5px;
+      line-height: 1.5;
+      max-width: 92%;
+    }
+    .tool {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .tool-head {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .tool-head .ok { color: var(--green); }
+    .tool-head .run { color: var(--purple); }
+    .tool-body { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+    .bar {
+      height: 6px;
+      background: #1e1c2c;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bar > i {
+      display: block;
+      height: 100%;
+      background: var(--green);
+      width: 100%;
+    }
+    .bar.partial > i { width: 55%; background: var(--purple); }
+    .preview {
+      border: 1px solid var(--purple);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0a0a10;
+    }
+    .preview img {
+      display: block;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .composer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #201e30;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .composer .send {
+      margin-left: auto;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--purple);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .side {
+      background: var(--panel2);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .tabs { display: flex; gap: 8px; }
+    .tab {
+      padding: 8px 14px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .tab.active { background: #32508c; color: white; font-weight: 700; }
+    .agent-row {
+      background: #201e30;
+      border-radius: 10px;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 14px 1fr;
+      gap: 10px 12px;
+      align-items: center;
+    }
+    .agent-row.active { background: #2d4678; }
+    .dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--muted);
+    }
+    .dot.on { background: var(--green); box-shadow: 0 0 10px var(--green); }
+    .agent-row strong { font-size: 14px; }
+    .agent-row span { grid-column: 2; color: var(--muted); font-size: 12px; }
+    .policy {
+      margin-top: auto;
+      border: 1px solid var(--yellow);
+      background: #32281e;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 12px;
+    }
+    .policy strong { color: var(--yellow); display: block; margin-bottom: 4px; }
+    .policy span { color: var(--muted); }
+    .banner {
+      width: min(1280px, 100%);
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .banner b { color: var(--text); }
+    .banner a { color: var(--teal); }
+    .footer-modes {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding: 10px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer-modes b { color: var(--text); }
+    .toast {
+      background: #3c1e46;
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div><b>Omnigent on Databricks</b> · interactive UI mock for Protein Lab</div>
+    <div>
+      <a href="../outputs/omnigent_databricks_protein_lab_ui_demo.mp4">Watch UI demo MP4</a>
+      ·
+      <a href="https://docs.databricks.com/aws/en/omnigent/">Docs</a>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="chrome">
+      <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+      <div class="title">Protein Lab — protein-folding-fun · omnigent</div>
+      <button class="share" type="button" onclick="alert('In real Omnigent: Share copies a live session URL for collab.')">↑ Share</button>
+    </div>
+    <div class="body">
+      <section class="chat">
+        <div class="user">Fold peptide + aspirin with Boltz and make a spin movie</div>
+        <div class="agent">
+          Done. Boltz <b>structure_confidence 0.75</b> · <b>complex_plddt 0.84</b> ·
+          movie ready in <code>outputs/</code>.
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <span>run_boltz_api_prediction</span>
+            <span class="ok">✓ Done</span>
+          </div>
+          <div class="tool-body">input: prediction-input.json · engine: boltz-api cloud</div>
+          <div class="bar"><i></i></div>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <span>make_structure_movie</span>
+            <span class="ok">✓ Done</span>
+          </div>
+          <div class="tool-body">72 frames @ 24fps → boltz-aspirin-peptide_spin.mp4</div>
+          <div class="bar"><i></i></div>
+        </div>
+
+        <div class="preview">
+          <img src="../outputs/boltz-aspirin-peptide/boltz-aspirin-peptide_still.png" alt="Peptide–aspirin complex" />
+        </div>
+
+        <div class="toast">Session shared · teammates can watch tools stream live</div>
+
+        <div class="composer">
+          Ask the agent anything…
+          <div class="send">↑</div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <div class="tabs">
+          <div class="tab">Files</div>
+          <div class="tab active">Agents</div>
+          <div class="tab">Shells</div>
+        </div>
+
+        <div class="agent-row active">
+          <div class="dot on"></div>
+          <strong>protein-lab</strong>
+          <span>claude-sdk · live · Folding peptide + aspirin…</span>
+        </div>
+        <div class="agent-row">
+          <div class="dot on"></div>
+          <strong>boltz-runner</strong>
+          <span>tool · boltz-api · prediction succeeded</span>
+        </div>
+        <div class="agent-row">
+          <div class="dot on"></div>
+          <strong>viz</strong>
+          <span>tool · matplotlib · spin.mp4 ready</span>
+        </div>
+
+        <div class="policy">
+          <strong>Policy · max_tool_calls 40</strong>
+          <span>Sandbox · write outputs/ · network for Boltz · Databricks AI Gateway models</span>
+        </div>
+      </aside>
+    </div>
+    <div class="footer-modes"><b>Chat</b><span>Terminal</span></div>
+  </div>
+</body>
+</html>

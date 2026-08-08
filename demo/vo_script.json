@@ -1,0 +1,43 @@
+{
+  "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+  "voice_name": "George - Warm Storyteller",
+  "model_id": "eleven_multilingual_v2",
+  "segments": [
+    {
+      "id": "01_hook",
+      "text": "Your gut makes a hormone after every meal. It lasts about two minutes. Then your body destroys it."
+    },
+    {
+      "id": "02_name",
+      "text": "It's called G L P one. A tiny peptide that tells the pancreas to release insulin when sugar is high, and quietly turns down hunger in the brain."
+    },
+    {
+      "id": "03_problem",
+      "text": "For decades, that two-minute lifespan made it useless as a drug. Medicine needed the same message — but a structure that could survive."
+    },
+    {
+      "id": "04_omnigent",
+      "text": "Enter Omnigent, from Databricks. A meta-harness for A I agents. One Y A M L agent. Tools, policies, and a live shareable session."
+    },
+    {
+      "id": "05_agent",
+      "text": "We define Protein Lab. Swap one line to change the model harness. The tools stay the same: Boltz for structure, render for stills, movie for the spin."
+    },
+    {
+      "id": "06_boltz",
+      "text": "The agent calls Boltz in the cloud. Sequence in. Three D coordinates and confidence out. G L P one, folded live."
+    },
+    {
+      "id": "07_structure",
+      "text": "This is the fold family behind the biggest metabolic drugs of the decade. Natural G L P one dies in minutes. Engineered cousins last days — same idea, redesigned structure."
+    },
+    {
+      "id": "08_ui",
+      "text": "In the Omnigent UI, tool cards stream as they run. Policies guard the session. Share lets a teammate watch the science unfold in real time."
+    },
+    {
+      "id": "09_cta",
+      "text": "Sequence. Structure. Story. From gut hormone to drug design — orchestrated by Omnigent on Databricks. Try it: omni run, agents, protein lab."
+    }
+  ]
+}

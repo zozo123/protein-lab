@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Omnigent Protein Lab · 3D Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/3dmol@2.4.2/build/3Dmol-min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --panel: #121826;
+      --accent: #7c5cff;
+      --text: #e8ecf4;
+      --muted: #8b95a8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+    }
+    aside {
+      background: var(--panel);
+      border-right: 1px solid #1e2638;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    h1 {
+      font-size: 1.05rem;
+      margin: 0;
+      letter-spacing: 0.02em;
+    }
+    h1 span { color: var(--accent); }
+    p.sub { margin: 0; color: var(--muted); font-size: 0.85rem; line-height: 1.4; }
+    label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    select, button {
+      width: 100%;
+      margin-top: 0.35rem;
+      padding: 0.55rem 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #2a3550;
+      background: #0b0f1a;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    button {
+      background: linear-gradient(135deg, #7c5cff, #5b3fd4);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover { filter: brightness(1.08); }
+    #viewer {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+    }
+    .badge {
+      position: absolute;
+      left: 1rem;
+      bottom: 1rem;
+      z-index: 5;
+      background: rgba(11, 15, 26, 0.75);
+      border: 1px solid #2a3550;
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      backdrop-filter: blur(6px);
+    }
+    .hint { font-size: 0.8rem; color: var(--muted); line-height: 1.45; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.78rem;
+      color: #00d4aa;
+    }
+    @media (max-width: 720px) {
+      body { grid-template-columns: 1fr; }
+      #viewer { height: 70vh; }
+    }
+  </style>
+</head>
+<body>
+  <aside>
+    <div>
+      <h1>Omnigent <span>Protein Lab</span></h1>
+      <p class="sub">Interactive 3D companion to the Omnigent agent demo. Structures load from RCSB by PDB id.</p>
+    </div>
+    <div>
+      <label for="target">Demo protein</label>
+      <select id="target">
+        <option value="1UBQ">Ubiquitin (1UBQ)</option>
+        <option value="1CRN">Crambin (1CRN)</option>
+        <option value="2HIU">Insulin (2HIU)</option>
+        <option value="2HHB">Hemoglobin (2HHB)</option>
+        <option value="1EMA">GFP (1EMA)</option>
+      </select>
+    </div>
+    <div>
+      <label for="style">Style</label>
+      <select id="style">
+        <option value="cartoon">Cartoon</option>
+        <option value="stick">Stick</option>
+        <option value="sphere">Sphere</option>
+        <option value="line">Line</option>
+      </select>
+    </div>
+    <button id="load">Load structure</button>
+    <p class="hint">
+      Pair this with the agent:<br />
+      <code>omni run ./agents/protein-lab</code><br /><br />
+      Offline movie pipeline:<br />
+      <code>python -m demo.run_demo</code>
+    </p>
+  </aside>
+  <div id="viewer">
+    <div class="badge" id="status">Loading…</div>
+  </div>
+  <script>
+    const element = document.getElementById("viewer");
+    const viewer = $3Dmol.createViewer(element, {
+      backgroundColor: "0b0f1a",
+      antialias: true,
+    });
+    const status = document.getElementById("status");
+
+    function colorFor(pdb) {
+      const map = {
+        "1UBQ": "0x7C5CFF",
+        "1CRN": "0x00D4AA",
+        "2HIU": "0xFF6B9D",
+        "2HHB": "0xFF4D4D",
+        "1EMA": "0x39FF14",
+      };
+      return map[pdb] || "0x7C5CFF";
+    }
+
+    function load() {
+      const pdb = document.getElementById("target").value;
+      const style = document.getElementById("style").value;
+      status.textContent = `Fetching ${pdb} from RCSB…`;
+      viewer.clear();
+      $3Dmol.download(`https://files.rcsb.org/view/${pdb}.pdb`, viewer, {}, function () {
+        const color = colorFor(pdb);
+        const styleObj = {};
+        styleObj[style] = { color };
+        if (style === "cartoon") {
+          styleObj.cartoon = { color, style: "oval", thickness: 0.3 };
+        }
+        viewer.setStyle({}, styleObj);
+        viewer.zoomTo();
+        viewer.render();
+        status.textContent = `${pdb} · drag to rotate · scroll to zoom · Omnigent Protein Lab`;
+      });
+    }
+
+    document.getElementById("load").addEventListener("click", load);
+    document.getElementById("target").addEventListener("change", load);
+    document.getElementById("style").addEventListener("change", load);
+    load();
+  </script>
+</body>
+</html>

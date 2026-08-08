@@ -1,0 +1,43 @@
+{
+  "voice_id": "Xb7hH8MSUJpSbSDYk0k2",
+  "voice_name": "Alice - Clear, Engaging Educator",
+  "model_id": "eleven_multilingual_v2",
+  "segments": [
+    {
+      "id": "01_hook",
+      "text": "After every meal, cells in your gut release a hormone. It lasts about two minutes. Then an enzyme destroys it."
+    },
+    {
+      "id": "02_name",
+      "text": "That hormone is G.L.P. one — glucagon-like peptide one. Thirty amino acids. It tells the pancreas to release insulin when blood sugar is high, and it reduces appetite in the brain."
+    },
+    {
+      "id": "03_problem",
+      "text": "A two-minute half-life is useless as medicine. The enzyme D.P.P. four chops the natural peptide almost immediately. To treat diabetes and obesity, we needed the same signal — in a structure that survives."
+    },
+    {
+      "id": "04_omnigent",
+      "text": "This is Omnigent, from Databricks. A meta-harness for A.I. agents. One shared session: web, desktop, or mobile. Policies, sandboxes, and live collaboration with Share."
+    },
+    {
+      "id": "05_agent",
+      "text": "We define Protein Lab in a short YAML file. Tools for Boltz structure prediction, stills, and spin movies. Change one line to swap the model harness — tools and guardrails stay the same."
+    },
+    {
+      "id": "06_boltz",
+      "text": "In the session, the agent calls Boltz in the cloud. Sequence in. Coordinates and confidence out. For our G.L.P. one run: structure confidence zero point eight three. Complex P.L.D.D.T. zero point nine zero."
+    },
+    {
+      "id": "07_structure",
+      "text": "Here is the predicted fold. Natural G.L.P. one is gone in minutes. Engineered analogs keep the same fold family idea, resist D.P.P. four, and last for days — the science behind modern metabolic drugs."
+    },
+    {
+      "id": "08_ui",
+      "text": "In the Omnigent interface, tool cards stream as they run. The Agents panel shows the live worker. Contextual policies cap tool calls. Share lets a teammate watch the science unfold."
+    },
+    {
+      "id": "09_cta",
+      "text": "Sequence. Structure. Story. Protein Lab on Omnigent by Databricks. Run it with: omni run, agents, protein-lab."
+    }
+  ]
+}

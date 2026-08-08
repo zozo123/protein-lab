@@ -1,0 +1,47 @@
+{
+  "voice_id": "TX3LPaxmHKxFdv7VOQHJ",
+  "voice_name": "Liam - Energetic Social",
+  "model_id": "eleven_multilingual_v2",
+  "segments": [
+    {
+      "id": "01_cold",
+      "text": "This hormone dies in one hundred twenty seconds. And it quietly powers a multi-billion-dollar drug class. Today we fold it live — with an A.I. agent."
+    },
+    {
+      "id": "02_promise",
+      "text": "I'm going to show you three things in under two minutes. The biology that actually matters. The engineering pattern you can steal. And a real Boltz prediction with real confidence scores — not a slide deck."
+    },
+    {
+      "id": "03_bio",
+      "text": "Meet G.L.P. one. Thirty amino acids from your gut. After you eat, it tells the pancreas: release insulin if sugar is high. It also turns down appetite in the brain. Problem? An enzyme called D.P.P. four destroys it in about two minutes."
+    },
+    {
+      "id": "04_stakes",
+      "text": "So medicine needed the same message — in a structure that survives. That's the story behind modern metabolic drugs. Same fold family idea. Engineered half-life measured in days, not minutes."
+    },
+    {
+      "id": "05_eng",
+      "text": "Now the engineering. Omnigent from Databricks is a meta-harness. You don't rewrite your agent to change models. One Y.A.M.L. file. Swap one line — Claude, Codex, Pi, Grok. Tools and policies stay put."
+    },
+    {
+      "id": "06_product",
+      "text": "Look at the real product surface. Shareable sessions. Tool cards that stream as they run. Contextual policies. Agents panel. This is how teams actually collaborate on agent work — not copy-paste from a chat window."
+    },
+    {
+      "id": "07_boltz",
+      "text": "Watch. Sequence in. Boltz cloud. Coordinates out. Our live run: structure confidence zero point eight three. P.L.D.D.T. zero point nine zero. Thirty residues. That is a real prediction artifact, not a mock."
+    },
+    {
+      "id": "08_spin",
+      "text": "Here is the fold. N to C. Heavy atoms. This is what the agent drops into the workspace — still, spin movie, metrics — ready to share."
+    },
+    {
+      "id": "09_value",
+      "text": "If you're in biocomputing: sequence to structure in one session. If you're an engineer: portable agents with guardrails. If you're a tech leader: one layer above the model chaos. That's the value."
+    },
+    {
+      "id": "10_cta",
+      "text": "Protein Lab on Omnigent. Run it: omni run, agents, protein-lab. Fold the two-minute hormone yourself."
+    }
+  ]
+}
