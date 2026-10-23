@@ -12,7 +12,7 @@ import math
 import shutil
 import subprocess
 from pathlib import Path
-from typing import List, Tuple
+from typing import Tuple
 
 import numpy as np
 from Bio.PDB import MMCIFParser
@@ -177,10 +177,6 @@ def render_frame(
     # to pixel
     def to_px(p):
         return (W / 2 + p[0] * (H * 0.42), H / 2 + 30 + p[1] * (H * 0.42))
-
-    # depth sort heavies
-    order = np.argsort(h_xyz[:, 2])
-    elem_col = {"C": (180, 190, 220), "N": (100, 160, 255), "O": (255, 120, 120), "S": (240, 220, 80)}
 
     # bonds: within residue sequential atoms roughly distance-based
     # build neighbor bonds for heavy atoms < 1.9 A
