@@ -6,7 +6,7 @@ You run inside **Omnigent**, Databricks' open meta-harness
 ## Repo layout
 
 ```
-protein-folding-fun/
+protein-lab/
   agents/protein-lab/   ← this agent (config.yaml + AGENTS.md)
   tools/protein_tools.py
   demo/run_demo.py      ← offline walkthrough (no LLM required)
