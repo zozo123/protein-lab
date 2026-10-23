@@ -7,6 +7,7 @@ Uses heavy-atom stick + CA ribbon, N→C rainbow, dark Omnigent-style stage.
 
 from __future__ import annotations
 
+import json
 import math
 import shutil
 import subprocess
@@ -18,7 +19,8 @@ from Bio.PDB import MMCIFParser
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
-CIF = ROOT / "outputs/boltz-e2e/glp1-hormone-demo/outputs/files/prediction/sab_pred_rJOi1zeaNY6EhbxtFSAp_predicted.cif"
+RUN_DIR = ROOT / "outputs/boltz-e2e/glp1-hormone-demo"
+CIF = RUN_DIR / "outputs/files/prediction/sab_pred_rJOi1zeaNY6EhbxtFSAp_predicted.cif"
 OUT = ROOT / "outputs" / "glp1_premium"
 W, H = 1920, 1080
 
@@ -74,6 +76,32 @@ def load_atoms(path: Path):
     return cas, heavies, res_list
 
 
+def load_metrics(run_dir: Path) -> dict:
+    """Confidence metrics from the Boltz run's metrics.json (same layout demo/run_boltz_e2e.py reads)."""
+    for p in sorted(run_dir.rglob("metrics.json")):
+        try:
+            data = json.loads(p.read_text())
+        except (OSError, json.JSONDecodeError):
+            continue
+        if not isinstance(data, dict):
+            continue
+        best = data.get("best_sample", data)
+        m = best.get("metrics", best) if isinstance(best, dict) else {}
+        if isinstance(m, dict):
+            return m
+    return {}
+
+
+def make_subtitle(n_res: int, metrics: dict) -> str:
+    """Residue count plus whichever confidence metrics the run actually reported."""
+    parts = [f"{n_res} residues"]
+    if isinstance(metrics.get("structure_confidence"), (int, float)):
+        parts.append(f"structure_confidence {metrics['structure_confidence']:.2f}")
+    if isinstance(metrics.get("complex_plddt"), (int, float)):
+        parts.append(f"pLDDT {metrics['complex_plddt']:.2f}")
+    return " · ".join(parts)
+
+
 def rot_y(pts: np.ndarray, deg: float) -> np.ndarray:
     a = math.radians(deg)
     c, s = math.cos(a), math.sin(a)
@@ -120,7 +148,7 @@ def render_frame(
     angle: float,
     elev: float = 22.0,
     title: str = "GLP-1 (7–36) · Boltz prediction",
-    subtitle: str = "30 residues · structure_confidence 0.83 · pLDDT 0.90",
+    subtitle: str = "",
 ) -> Image.Image:
     img = Image.new("RGB", (W, H), (8, 10, 18))
     # radial glow
@@ -216,12 +244,14 @@ def main():
     cas, heavies, res_list = load_atoms(CIF)
     n_res = len(res_list)
     print(f"CA={len(cas)} heavy={len(heavies)} residues={n_res}")
+    subtitle = make_subtitle(n_res, load_metrics(RUN_DIR))
+    print(f"subtitle: {subtitle}")
 
     n_frames = 96
     still = None
     for i in range(n_frames):
         angle = 360.0 * i / n_frames
-        fr = render_frame(cas, heavies, n_res, angle)
+        fr = render_frame(cas, heavies, n_res, angle, subtitle=subtitle)
         fr.save(frames_dir / f"frame_{i:04d}.png")
         if i == 12:
             still = fr
