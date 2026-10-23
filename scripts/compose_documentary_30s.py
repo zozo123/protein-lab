@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-30-second NYT-style short — measured, specific, no hype rhetoric.
+30-second documentary-style short — measured, specific, no hype rhetoric.
 
-Visual grammar (documentary / NYT video essay):
+Visual grammar (documentary / video essay):
   - Quiet opens, long enough holds to read
   - One idea per beat
   - Real assets only (Boltz CIF spin, official Omnigent UI, real metrics)
@@ -26,9 +26,9 @@ from typing import List, Tuple
 from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "outputs" / "nyt-30s"
+OUT = ROOT / "outputs" / "documentary-30s"
 FRAMES = OUT / "frames"
-VO = ROOT / "outputs" / "vo_nyt"
+VO = ROOT / "outputs" / "vo_documentary"
 UI = ROOT / "docs" / "assets" / "omnigent-ui"
 PREMIUM = ROOT / "outputs" / "glp1_premium"
 W, H, FPS = 1920, 1080, 24
@@ -282,7 +282,7 @@ def spin(sec: float) -> List[Image.Image]:
 def ensure_vo() -> List[Path]:
     VO.mkdir(parents=True, exist_ok=True)
     # Force regenerate for new script
-    script = json.loads((ROOT / "demo/vo_script_nyt.json").read_text())
+    script = json.loads((ROOT / "demo/vo_script_documentary.json").read_text())
     key_path = ROOT / ".env"
     if not key_path.exists():
         key_path = Path.home() / "Developer/video-use/.env"
@@ -393,7 +393,7 @@ def main() -> int:
     if not (PREMIUM / "frames").exists():
         subprocess.run([sys.executable, str(ROOT / "scripts/render_glp1_premium.py")], check=True, cwd=str(ROOT))
 
-    print("=== VO (NYT) ===")
+    print("=== VO (documentary) ===")
     # wipe old VO to force new takes
     if VO.exists():
         for p in VO.glob("*.mp3"):
@@ -484,7 +484,7 @@ def main() -> int:
         capture_output=True,
     )
 
-    final = ROOT / "outputs" / "omnigent_glp1_30s_nyt.mp4"
+    final = ROOT / "outputs" / "omnigent_glp1_30s_documentary.mp4"
     subprocess.run(
         [
             "ffmpeg",
@@ -520,13 +520,13 @@ def main() -> int:
     meta = {
         "final": str(final),
         "duration_s": dur,
-        "style": "NYT short / measured documentary",
+        "style": "measured documentary short",
         "rhetoric": "no not-X-but-Y; specific facts only",
         "metrics": {"structure_confidence": CONF, "plddt": PLDDT},
         "voice": "George (storyteller, restrained)",
-        "script": "demo/vo_script_nyt.json",
+        "script": "demo/vo_script_documentary.json",
     }
-    (ROOT / "outputs" / "nyt_30s_session.json").write_text(json.dumps(meta, indent=2))
+    (ROOT / "outputs" / "documentary_30s_session.json").write_text(json.dumps(meta, indent=2))
     print(json.dumps(meta, indent=2))
     return 0
 

@@ -610,7 +610,7 @@ def main() -> int:
         "FINAL_omnigent_glp1_demo.mp4",
         "omnigent_boltz_glp1_deep_ui.mp4",
         "omnigent_boltz_glp1_straight.mp4",
-        "omnigent_glp1_30s_nyt.mp4",
+        "omnigent_glp1_30s_documentary.mp4",
     ]:
         shutil.copy(final, ROOT / "outputs" / name)
 

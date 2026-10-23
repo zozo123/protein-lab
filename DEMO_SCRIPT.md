@@ -3,7 +3,7 @@
 ## Setup (once)
 
 ```bash
-cd protein-folding-fun
+cd protein-lab
 source .venv/bin/activate
 export PYTHONPATH=$PWD
 

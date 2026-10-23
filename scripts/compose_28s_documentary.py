@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-~28s NYT-narrated full story — structure fold is the long hold.
+~28s documentary-style full story — structure fold is the long hold.
 
   sequence (brief) → Omnigent UI (crisp real snaps) → Boltz beat
   → long protein structure movie → quiet CTA
@@ -390,7 +390,7 @@ def concat_audio(files: List[Path], gap: float = 0.12) -> Tuple[Path, List[float
 
 
 def speed_to_target(audio_in: Path, target: float = 28.0) -> Tuple[Path, float]:
-    """Land near 28s: mild atempo only if needed; NYT pace preferred."""
+    """Land near 28s: mild atempo only if needed; measured pace preferred."""
     dur = ffprobe_dur(audio_in)
     out = OUT / "narration_final.m4a"
     if abs(dur - target) <= 1.2:
@@ -451,7 +451,7 @@ def main() -> int:
     if not (PREMIUM / "frames").exists():
         subprocess.run([sys.executable, str(ROOT / "scripts/render_glp1_premium.py")], check=True, cwd=str(ROOT))
 
-    print("=== VO 28s NYT (structure-forward) ===")
+    print("=== VO 28s documentary (structure-forward) ===")
     # always fresh VO for 28s script
     if VO.exists():
         for p in VO.glob("*.mp3"):
@@ -606,7 +606,7 @@ def main() -> int:
     for name in [
         "FINAL_omnigent_glp1_demo.mp4",
         "omnigent_boltz_glp1_40s.mp4",
-        "omnigent_glp1_30s_nyt.mp4",
+        "omnigent_glp1_30s_documentary.mp4",
         "omnigent_boltz_glp1_straight.mp4",
     ]:
         shutil.copy(final, ROOT / "outputs" / name)
@@ -614,7 +614,7 @@ def main() -> int:
     meta = {
         "final": str(final),
         "duration_s": ffprobe_dur(final),
-        "style": "NYT narrator · structure-forward",
+        "style": "documentary narrator · structure-forward",
         "visual_budget": {
             "sequence": "~14%",
             "omnigent_ui": "~18%",
